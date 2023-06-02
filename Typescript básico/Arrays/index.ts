@@ -1,7 +1,4 @@
-enum tipoCurso {
-  "avancado",
-  "iniciante",
-}
+type tipoCurso = "avancado" | "iniciante";
 
 interface Curso {
   aulas: number;
@@ -23,13 +20,11 @@ fetchCursos();
 
 function mostrarCursos(cursos: Array<Curso>) {
   console.log(cursos);
-  const cursoComponent = cursos.map(
-    (curso: Curso) =>
-      `
-      <h1 style="color:${
-        curso.nivel === tipoCurso.iniciante ? "blue" : "red"
-      }">${curso.nome} </h1>
-      <p>${curso.horas}</p>
+  const cursoComponent = cursos.map((curso: Curso) => {
+    const titleColor = curso.nivel === "iniciante" ? "blue" : "red";
+    return `
+      <h1 style="color:${titleColor}">${curso.nome} </h1>
+      <p>Total de horas${curso.horas}</p>
       <p>O Curso é gratuíto? ${curso.gratuito ? "Sim" : "Não"}</p>
       <p>Nível: ${curso.nivel}</p>
       <p>Qtd de aulas: ${curso.aulas}</p>
@@ -41,8 +36,8 @@ function mostrarCursos(cursos: Array<Curso>) {
       <ul>
         ${curso.tags.map((tag) => `<li>${tag}</li>`)}
       </ul>
-    `
-  );
+    `;
+  });
 
   console.log(cursoComponent);
   cursoComponent.forEach((curso) => (document.body.innerHTML += curso));
