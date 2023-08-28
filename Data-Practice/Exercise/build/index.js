@@ -17,11 +17,25 @@ function fillTable(transactions) {
     <tr>
       <td>${transaction.name}</td>
       <td>${transaction.email}</td>
-      <td>${transaction.value}</td>
+      <td>${transaction.value?.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+        }) || null}</td>
       <td>${transaction.paymentForm}</td>
       <td>${transaction.status}</td>
     </tr>
     `;
     });
 }
-fillTable(await fetchTransactions());
+function fillStatistics(transactions) {
+    const statistics = new Statistics(transactions);
+    const totalElement = document.querySelector("#total span");
+    if (totalElement)
+        totalElement.innerText = statistics.total.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+        });
+}
+const transactions = await fetchTransactions();
+fillTable(transactions);
+fillStatistics(transactions);
