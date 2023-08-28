@@ -1,3 +1,5 @@
+import countBy, { CountList } from "./countBy.js";
+
 type TransactionWithValue = ITransaction & { value: number };
 
 function hasValidValue(
@@ -8,8 +10,14 @@ function hasValidValue(
 
 export default class Statistics {
   total: number;
+  pagamento: CountList;
+  status: CountList;
+
   constructor(private transactions: ITransaction[]) {
     this.total = this.setTotal();
+    this.pagamento = this.setPaymentForms();
+    this.status = this.setStatus();
+    this.setPaymentForms();
   }
 
   private setTotal() {
@@ -19,5 +27,13 @@ export default class Statistics {
         return totalValue + transaction.value;
       }, 0);
     return totalTransactionsValue;
+  }
+
+  private setPaymentForms() {
+    return countBy(this.transactions.map(({ paymentForm }) => paymentForm));
+  }
+
+  private setStatus() {
+    return countBy(this.transactions.map(({ status }) => status));
   }
 }

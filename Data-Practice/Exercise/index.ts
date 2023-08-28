@@ -1,3 +1,4 @@
+import Statistics from "./Statistics.js";
 import { fetchData } from "./fetchData.js";
 import { sanitizeTransactionData } from "./sanitizeTransactionData.js";
 
