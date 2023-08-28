@@ -6,7 +6,22 @@ export async function fetchTransactions() {
         throw new Error("Transactions API data couldn't be found");
     }
     const sanitizedTransactions = transactionsData.map(sanitizeTransactionData);
-    // console.log(sanitizedTransactions);
     return sanitizedTransactions;
 }
-fetchTransactions();
+function fillTable(transactions) {
+    const table = document.querySelector("#transactions tbody");
+    if (!table)
+        return;
+    transactions.forEach((transaction) => {
+        table.innerHTML += `
+    <tr>
+      <td>${transaction.name}</td>
+      <td>${transaction.email}</td>
+      <td>${transaction.value}</td>
+      <td>${transaction.paymentForm}</td>
+      <td>${transaction.status}</td>
+    </tr>
+    `;
+    });
+}
+fillTable(await fetchTransactions());

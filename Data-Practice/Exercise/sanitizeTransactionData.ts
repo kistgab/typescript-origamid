@@ -16,7 +16,7 @@ declare global {
     email: string;
     paymentForm: TransactionPaymentForm;
     name: string;
-    valor: number | null;
+    value: number | null;
   }
   export interface IApiTransaction {
     Status: TransactionStatus;
@@ -41,6 +41,6 @@ export function sanitizeTransactionData(
     email: transaction.Email,
     paymentForm: transaction["Forma de Pagamento"],
     name: transaction.Nome,
-    valor: currencyToValue(transaction["Valor (R$)"]),
+    value: currencyToValue(transaction["Valor (R$)"]),
   };
 }
