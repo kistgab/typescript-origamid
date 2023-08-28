@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "strict": true,
+    "outDir": "./build",
     "module": "ESNext"
   }
 }
