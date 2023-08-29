@@ -1,7 +1,7 @@
-import Statistics from "./Statistics.js";
-import { CountList } from "./countBy.js";
-import { fetchData } from "./fetchData.js";
-import { sanitizeTransactionData } from "./sanitizeTransactionData.js";
+import Statistics from "./core/classes/Statistics.js";
+import { CountList } from "./core/functions/countBy.js";
+import { fetchData } from "./core/functions/fetchData.js";
+import { sanitizeTransactionData } from "./core/functions/sanitizeTransactionData.js";
 
 export async function fetchTransactions(): Promise<ITransaction[]> {
   const transactionsData = await fetchData<IApiTransaction[]>(
