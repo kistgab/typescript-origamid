@@ -28,8 +28,18 @@ function fillTable(transactions) {
     `;
     });
 }
+function fillList(list, containerId) {
+    const containerElement = document.getElementById(containerId);
+    if (containerElement) {
+        Object.keys(list).forEach((key) => {
+            containerElement.innerHTML += `<p>${key}: ${list[key]}</p>`;
+        });
+    }
+}
 function fillStatistics(transactions) {
     const statistics = new Statistics(transactions);
+    fillList(statistics.formaPagamento, "formaPagamento");
+    fillList(statistics.status, "status");
     const totalElement = document.querySelector("#total span");
     if (totalElement)
         totalElement.innerText = statistics.total.toLocaleString("pt-BR", {

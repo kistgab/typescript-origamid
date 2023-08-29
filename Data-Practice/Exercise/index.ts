@@ -1,4 +1,5 @@
 import Statistics from "./Statistics.js";
+import { CountList } from "./countBy.js";
 import { fetchData } from "./fetchData.js";
 import { sanitizeTransactionData } from "./sanitizeTransactionData.js";
 
@@ -34,8 +35,21 @@ function fillTable(transactions: ITransaction[]): void {
   });
 }
 
+function fillList(list: CountList, containerId: string): void {
+  const containerElement = document.getElementById(containerId);
+
+  if (containerElement) {
+    Object.keys(list).forEach((key) => {
+      containerElement.innerHTML += `<p>${key}: ${list[key]}</p>`;
+    });
+  }
+}
+
 function fillStatistics(transactions: ITransaction[]): void {
   const statistics = new Statistics(transactions);
+  fillList(statistics.formaPagamento, "formaPagamento");
+  fillList(statistics.status, "status");
+
   const totalElement = document.querySelector<HTMLElement>("#total span");
   if (totalElement)
     totalElement.innerText = statistics.total.toLocaleString("pt-BR", {

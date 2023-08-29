@@ -10,12 +10,12 @@ function hasValidValue(
 
 export default class Statistics {
   total: number;
-  pagamento: CountList;
+  formaPagamento: CountList;
   status: CountList;
 
   constructor(private transactions: ITransaction[]) {
     this.total = this.setTotal();
-    this.pagamento = this.setPaymentForms();
+    this.formaPagamento = this.setPaymentForms();
     this.status = this.setStatus();
     this.setPaymentForms();
   }

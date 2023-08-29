@@ -5,12 +5,12 @@ function hasValidValue(transaction) {
 export default class Statistics {
     transactions;
     total;
-    pagamento;
+    formaPagamento;
     status;
     constructor(transactions) {
         this.transactions = transactions;
         this.total = this.setTotal();
-        this.pagamento = this.setPaymentForms();
+        this.formaPagamento = this.setPaymentForms();
         this.status = this.setStatus();
         this.setPaymentForms();
     }
