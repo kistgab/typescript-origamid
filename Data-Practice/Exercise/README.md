@@ -2,7 +2,7 @@
 
 1. Acesse os dados da api: https://api.origamid.dev/json/transacoes.json
 2. Mostre em uma tabela os dados de cada transação.
-3. Calcule:
+3. Calcule as seguinte informações:
    1. Soma total dos valores
    2. Transações por meio de pagamento.
    3. Transações por status.
