@@ -2,6 +2,9 @@ import Statistics from "./core/classes/Statistics.js";
 import { CountList } from "./core/functions/countBy.js";
 import { fetchData } from "./core/functions/fetchData.js";
 import { sanitizeTransactionData } from "./core/functions/sanitizeTransactionData.js";
+import translateDayInEnglishToPortuguese, {
+  WeekDictionary,
+} from "./core/functions/translateDay.js";
 
 export async function fetchTransactions(): Promise<ITransaction[]> {
   const transactionsData = await fetchData<IApiTransaction[]>(
@@ -47,15 +50,21 @@ function fillList(list: CountList, containerId: string): void {
 
 function fillStatistics(transactions: ITransaction[]): void {
   const statistics = new Statistics(transactions);
-  fillList(statistics.formaPagamento, "formaPagamento");
+  fillList(statistics.paymentForms, "formaPagamento");
   fillList(statistics.status, "status");
-
   const totalElement = document.querySelector<HTMLElement>("#total span");
-  if (totalElement)
+  if (totalElement) {
     totalElement.innerText = statistics.total.toLocaleString("pt-BR", {
       style: "currency",
       currency: "BRL",
     });
+  }
+  const diaElement = document.querySelector<HTMLElement>("#day span");
+  if (diaElement) {
+    diaElement.innerText = `Dia da semana com mais vendas: ${translateDayInEnglishToPortuguese(
+      statistics.weekDayWithMoreSales[0] as keyof WeekDictionary
+    )}`;
+  }
 }
 
 const transactions = await fetchTransactions();
