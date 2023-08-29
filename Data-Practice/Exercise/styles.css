@@ -1,3 +1,7 @@
+* {
+  font-family: sans-serif;
+}
+
 table {
   border-spacing: 0;
   text-align: left;
@@ -9,7 +13,7 @@ td {
 }
 
 table tr:nth-child(even) {
-  background-color: ghostwhite;
+  background-color: lightgray;
 }
 
 h2,
