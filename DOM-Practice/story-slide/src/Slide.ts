@@ -1,3 +1,5 @@
+import Timeout from "./Timeout.js";
+
 export default class Slide {
   container: Element;
   slides: Element[];
@@ -5,6 +7,7 @@ export default class Slide {
   time: number;
   activeIndex: number;
   activeSlide: Element;
+  timeout: Timeout | null;
 
   constructor(
     container: Element,
@@ -18,7 +21,9 @@ export default class Slide {
     this.time = time;
     this.activeIndex = 0;
     this.activeSlide = this.slides[this.activeIndex];
+    this.timeout = null;
     this.init();
+    this.auto(time);
   }
 
   hide(slide: Element) {
@@ -30,6 +35,12 @@ export default class Slide {
     this.activeIndex = index;
     this.activeSlide = this.slides[this.activeIndex];
     this.activeSlide.classList.add("active");
+    this.auto(this.time);
+  }
+
+  auto(time: number): void {
+    this.timeout?.clear();
+    this.timeout = new Timeout(() => this.next(), time);
   }
 
   next(): void {
