@@ -3,6 +3,7 @@ export default class Slide {
   elements: Element[];
   controls: Element;
   time: number;
+
   constructor(
     container: Element,
     elements: Element[],
