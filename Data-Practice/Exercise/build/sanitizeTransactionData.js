@@ -9,6 +9,6 @@ export function sanitizeTransactionData(transaction) {
         email: transaction.Email,
         paymentForm: transaction["Forma de Pagamento"],
         name: transaction.Nome,
-        valor: currencyToValue(transaction["Valor (R$)"]),
+        value: currencyToValue(transaction["Valor (R$)"]),
     };
 }
