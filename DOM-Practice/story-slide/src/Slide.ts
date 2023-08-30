@@ -62,18 +62,17 @@ export default class Slide {
   }
 
   pauseSlideTimeout(): void {
-    console.log("pause");
     this.pausedTimeout = new Timeout(() => {
+      this.timeout?.pause();
       this.isPaused = true;
     }, 300);
   }
 
   continueSlideTimeout() {
-    console.log("continua");
     this.pausedTimeout?.clear();
     if (this.isPaused) {
       this.isPaused = false;
-      this.startTimerToPassTheSlides(this.time);
+      this.timeout?.continue();
     }
   }
 
