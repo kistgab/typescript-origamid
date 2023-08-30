@@ -8,6 +8,8 @@ export default class Slide {
   activeIndex: number;
   activeSlide: Element;
   timeout: Timeout | null;
+  isPaused: boolean;
+  pausedTimeout: Timeout | null;
 
   constructor(
     container: Element,
@@ -22,39 +24,57 @@ export default class Slide {
     this.activeIndex = 0;
     this.activeSlide = this.slides[this.activeIndex];
     this.timeout = null;
+    this.isPaused = false;
+    this.pausedTimeout = null;
     this.init();
-    this.auto(time);
   }
 
-  hide(slide: Element) {
+  hideSlide(slide: Element) {
     slide.classList.remove("active");
   }
 
-  show(index: number) {
-    this.slides.forEach(this.hide);
+  showSlide(index: number) {
+    this.slides.forEach(this.hideSlide);
     this.activeIndex = index;
     this.activeSlide = this.slides[this.activeIndex];
     this.activeSlide.classList.add("active");
-    this.auto(this.time);
+    this.startTimerToPassTheSlides(this.time);
   }
 
-  auto(time: number): void {
+  startTimerToPassTheSlides(time: number): void {
     this.timeout?.clear();
-    this.timeout = new Timeout(() => this.next(), time);
+    this.timeout = new Timeout(() => this.goToNextSlide(), time);
   }
 
-  next(): void {
+  goToNextSlide(): void {
+    if (this.isPaused) return;
     const totalSlides = this.slides.length;
     const realActiveSlidePosition = this.activeIndex + 1;
     const next =
       realActiveSlidePosition < totalSlides ? this.activeIndex + 1 : 0;
-    this.show(next);
+    this.showSlide(next);
   }
 
-  prev(): void {
+  goToPreviousSlide(): void {
     const prev =
       this.activeIndex > 0 ? this.activeIndex - 1 : this.slides.length - 1;
-    this.show(prev);
+    this.showSlide(prev);
+  }
+
+  pauseSlideTimeout(): void {
+    console.log("pause");
+    this.pausedTimeout = new Timeout(() => {
+      this.isPaused = true;
+    }, 300);
+  }
+
+  continueSlideTimeout() {
+    console.log("continua");
+    this.pausedTimeout?.clear();
+    if (this.isPaused) {
+      this.isPaused = false;
+      this.startTimerToPassTheSlides(this.time);
+    }
   }
 
   private addControls() {
@@ -64,12 +84,19 @@ export default class Slide {
     nextButton.innerText = "Próximo Slide";
     this.controls.appendChild(prevButton);
     this.controls.appendChild(nextButton);
-    nextButton.addEventListener("pointerup", () => this.next());
-    prevButton.addEventListener("pointerup", () => this.prev());
+    this.controls.addEventListener("pointerdown", () =>
+      this.pauseSlideTimeout()
+    );
+    this.controls.addEventListener("pointerup", () =>
+      this.continueSlideTimeout()
+    );
+    nextButton.addEventListener("pointerup", () => this.goToNextSlide());
+    prevButton.addEventListener("pointerup", () => this.goToPreviousSlide());
   }
 
   private init() {
     this.addControls();
-    this.show(this.activeIndex);
+    this.showSlide(this.activeIndex);
+    this.startTimerToPassTheSlides(this.time);
   }
 }
