@@ -21,7 +21,7 @@ export default class Slide {
     this.slides = slides;
     this.controls = controls;
     this.time = time;
-    this.activeIndex = 0;
+    this.activeIndex = Number(localStorage.getItem("activeSlide")) || 0;
     this.activeSlide = this.slides[this.activeIndex];
     this.timeout = null;
     this.isPaused = false;
@@ -38,9 +38,10 @@ export default class Slide {
   }
 
   showSlide(index: number) {
-    this.slides.forEach(this.hideSlide);
     this.activeIndex = index;
     this.activeSlide = this.slides[this.activeIndex];
+    localStorage.setItem("activeSlide", String(this.activeIndex));
+    this.slides.forEach(this.hideSlide);
     this.activeSlide.classList.add("active");
     if (this.activeSlide instanceof HTMLVideoElement) {
       this.startVideoTimer(this.activeSlide);
