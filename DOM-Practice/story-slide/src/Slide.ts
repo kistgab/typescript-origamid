@@ -31,6 +31,10 @@ export default class Slide {
 
   hideSlide(slide: Element) {
     slide.classList.remove("active");
+    if (slide instanceof HTMLVideoElement) {
+      slide.pause();
+      slide.currentTime = 0;
+    }
   }
 
   showSlide(index: number) {
@@ -38,10 +42,26 @@ export default class Slide {
     this.activeIndex = index;
     this.activeSlide = this.slides[this.activeIndex];
     this.activeSlide.classList.add("active");
-    this.startTimerToPassTheSlides(this.time);
+    if (this.activeSlide instanceof HTMLVideoElement) {
+      this.startVideoTimer(this.activeSlide);
+    } else {
+      this.startTimerToPassTheSlide(this.time);
+    }
   }
 
-  startTimerToPassTheSlides(time: number): void {
+  startVideoTimer(video: HTMLVideoElement) {
+    video.muted = true;
+    video.play();
+    let isFirstTimePlaying = true;
+    video.addEventListener("playing", () => {
+      if (isFirstTimePlaying) {
+        this.startTimerToPassTheSlide(video.duration * 1000);
+      }
+      isFirstTimePlaying = false;
+    });
+  }
+
+  startTimerToPassTheSlide(time: number): void {
     this.timeout?.clear();
     this.timeout = new Timeout(() => this.goToNextSlide(), time);
   }
@@ -65,6 +85,9 @@ export default class Slide {
     this.pausedTimeout = new Timeout(() => {
       this.timeout?.pause();
       this.isPaused = true;
+      if (this.activeSlide instanceof HTMLVideoElement) {
+        this.activeSlide.pause();
+      }
     }, 300);
   }
 
@@ -73,6 +96,9 @@ export default class Slide {
     if (this.isPaused) {
       this.isPaused = false;
       this.timeout?.continue();
+      if (this.activeSlide instanceof HTMLVideoElement) {
+        this.activeSlide.play();
+      }
     }
   }
 
@@ -96,6 +122,6 @@ export default class Slide {
   private init() {
     this.addControls();
     this.showSlide(this.activeIndex);
-    this.startTimerToPassTheSlides(this.time);
+    this.startTimerToPassTheSlide(this.time);
   }
 }
